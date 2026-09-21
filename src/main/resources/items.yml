@@ -1,0 +1,46 @@
+# TR: ItemJoin benzeri giris esyalari. Yalniz VLosses isaretli esyalar yonetilir; envanter silinmez.
+# EN: Lobby items use persistent tags. Occupied slots are skipped; ordinary items are preserved.
+# DE: Lobby-Items werden markiert. Belegte Plaetze werden uebersprungen, normale Items bleiben.
+# TR: Cikista/dunya degisiminde VLosses esyalari kaldirilir. Her giriste tekrar verilir.
+enabled: true
+# TR: true yer degistirmeyi kilitler. false kendi envanteri icinde tasimaya izin verir;
+# sandiga koyma/atma/tuketme yine engellenir, kopyalama ve lobi disina sizma onlenir.
+lock: true
+cooldown-ms: 750
+
+# TR: slot 0-8. Her esyaya farkli slot. permission bos ise herkes kullanabilir.
+# EN: Actions: MESSAGE:text, PLAYER_COMMAND:command, CONSOLE_COMMAND:command, SERVER:name, SPAWN.
+# EN: Commands are administrator-configured only; {player}/{uuid} are the supported substitutions.
+# TR: CONSOLE_COMMAND yalniz guvendiginiz yonetici ayarlarinda kullanin; sunucu yetkisiyle calisir.
+# TR: Komut basina '/' yazmayin. SERVER hedefi bridge.allowed-servers listesinde olmali ve
+# oyuncuda vlosses.server.<hedef> yetkisi olmali. Ornek: 'SERVER:survival'.
+# DE: SERVER braucht eine freigegebene Zieladresse und vlosses.server.<ziel>.
+items:
+  spawn:
+    slot: 0
+    material: COMPASS
+    name: '<aqua>{lang:item-spawn}</aqua>'
+    lore: ['<gray>{lang:item-spawn-lore}</gray>']
+    permission: vlosses.spawn
+    actions: ['SPAWN']
+  discord:
+    slot: 4
+    material: PAPER
+    name: '<blue>{lang:item-discord}</blue>'
+    lore: ['<gray>{lang:item-click-lore}</gray>']
+    permission: ''
+    actions: ['PLAYER_COMMAND:discord']
+  vote:
+    slot: 7
+    material: EMERALD
+    name: '<green>{lang:item-vote}</green>'
+    lore: ['<gray>{lang:item-click-lore}</gray>']
+    permission: ''
+    actions: ['PLAYER_COMMAND:vote']
+  website:
+    slot: 8
+    material: BOOK
+    name: '<yellow>{lang:item-website}</yellow>'
+    lore: ['<gray>{lang:item-click-lore}</gray>']
+    permission: ''
+    actions: ['PLAYER_COMMAND:website']

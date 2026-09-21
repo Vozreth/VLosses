@@ -1,0 +1,72 @@
+# TR: MiniMessage ve & renkleri desteklenir; aciklamalar yalniz configlerde tutulur.
+# EN: MiniMessage and legacy & colors. {lang:key} reads the player's language file.
+# DE: MiniMessage und &-Farben. {lang:key} liest aus der Sprachdatei des Spielers.
+# TR: Yerlesik: {player} {display_name} {world} {online} {max_players} {ping} {prefix}
+# {suffix} {group} {server} {network_online} ve {animation:brand}.
+# EN: Prefix/suffix/group use LuckPerms when installed; %tokens% use PlaceholderAPI.
+# TR: Her oyuncu icin ayri gorev yoktur. Degismeyen TAB/satir bilesenleri yeniden gonderilmez.
+# EN: One shared timer; unchanged display components are not resent. Empty lobbies skip rendering.
+# TR: 20 tick = 1 saniye. Tavsiye 20-40; alt sinir 2. Gercek akicilik sunucu TPS'sine baglidir.
+tab:
+  enabled: true
+  interval-ticks: 20
+  header:
+    - "\n{animation:brand}\n<gray>{lang:ui-welcome}</gray>\n"
+  footer:
+    - "\n<gray>{lang:ui-online}: <white>{online}</white> | {lang:ui-ping}: <white>{ping} ms</white></gray>\n<dark_gray>/vl help</dark_gray>\n"
+    - "\n<gray>{lang:ui-network}: <white>{network_online}</white></gray>\n<aqua>/discord</aqua> <dark_gray>•</dark_gray> <aqua>/website</aqua>\n"
+  player-name: '{prefix}{player}{suffix}'
+
+scoreboard:
+  enabled: true
+  interval-ticks: 20
+  # TR: false baska eklentinin scoreboard/nametag takimlarini korur, paneli devralmaz.
+  # EN: false preserves another plugin's scoreboard/teams. Diagnose conflicts before overriding.
+  # DE: false schuetzt Scoreboards/Teams anderer Plugins. Konflikte zuerst pruefen.
+  override-existing: false
+  title: ['{animation:brand}']
+  # TR: En fazla 15 satir. Tekrarlanan ve bos satirlar desteklenir.
+  lines:
+    - ''
+    - '<gray>{lang:ui-player}</gray> <white>{player}</white>'
+    - '<gray>{lang:ui-rank}</gray> {prefix}<white>{group}</white>'
+    - ''
+    - '<gray>{lang:ui-online}</gray> <aqua>{online}</aqua>'
+    - '<gray>{lang:ui-ping}</gray> <green>{ping} ms</green>'
+    - ''
+    - '<yellow>{lang:ui-enjoy}</yellow>'
+    - '<dark_gray>/vote</dark_gray>'
+
+animations:
+  # TR: Animasyonlar goruntuleme araliginda orneklenir. interval-ticks degerlerini uyumlu tutun.
+  brand:
+    interval-ticks: 20
+    frames:
+      - '<aqua><bold>VLosses</bold></aqua>'
+      - '<white><bold>VLosses</bold></white>'
+      - '<blue><bold>VLosses</bold></blue>'
+
+announcements:
+  enabled: true
+  # TR: Her aralikta bir duyuru sirayla gonderilir. En az 10 saniye.
+  interval-seconds: 120
+  # TR: CHAT, ACTION_BAR veya TITLE. TITLE icin ilk yeni satirdan sonrasi alt basliktir.
+  # EN: Each entry can require a permission. Messages fall back to English if a language is absent.
+  # TR: /vl announce 1 listede 1. mesaji aninda sohbete gonderir. Odul/oy sayaci dahil degildir.
+  entries:
+    - channel: CHAT
+      permission: ''
+      messages:
+        en: "<aqua><click:run_command:'/discord'>{lang:announcement-discord}</click></aqua>"
+    - channel: CHAT
+      permission: ''
+      messages:
+        en: "<yellow><click:run_command:'/vote'>{lang:announcement-vote}</click></yellow>"
+    - channel: CHAT
+      permission: ''
+      messages:
+        en: "<green><click:run_command:'/website'>{lang:announcement-website}</click></green>"
+    - channel: ACTION_BAR
+      permission: ''
+      messages:
+        en: '<aqua>{lang:announcement-welcome}</aqua>'

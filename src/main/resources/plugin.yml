@@ -1,0 +1,36 @@
+name: VLosses
+version: '${version}'
+
+main: me.vlosses.vLosses.VLosses
+api-version: '1.21.11'
+load: POSTWORLD
+softdepend: [LuckPerms, PlaceholderAPI]
+commands:
+  vlosses:
+    aliases: [vl]
+    usage: /vlosses
+  lobby:
+    aliases: [hub, spawn]
+    usage: /lobby
+  discord:
+    aliases: [discor, dc]
+    usage: /discord
+  vote:
+    aliases: [oy]
+    usage: /vote
+  website:
+    aliases: [site, web]
+    usage: /website
+permissions:
+  vlosses.use:
+    default: true
+  vlosses.spawn:
+    default: true
+  vlosses.language:
+    default: true
+  vlosses.admin:
+    default: op
+  vlosses.bypass:
+    default: false
+  vlosses.server.*:
+    default: op

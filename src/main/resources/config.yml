@@ -1,0 +1,139 @@
+# VLosses 1.0.1 | Paper 1.21.11 | Java 21+
+# TR: Duz komutlar: /lobby (/hub, /spawn), /discord (/discor, /dc), /vote (/oy), /website (/site, /web).
+# Yonetim: /vl reload, /vl setspawn, /vl diagnostics. Yeni komutlar icin JAR degisiminden sonra
+# sunucuyu yeniden baslatin. Eski config korunur; yeni korumalar anahtar yoksa acik kabul edilir.
+# EN: Restart after upgrading the JAR to register commands. Existing configs are preserved.
+# DE: Nach JAR-Update neu starten. Bestehende Konfigurationen bleiben erhalten.
+# TR: Baska plugin ayni komutu kullaniyorsa /vlosses:lobby gibi ad alanli komutu kullanin.
+# EN: Command collisions can be resolved with /vlosses:lobby or /vlosses:discord.
+# API: https://jd.papermc.io/paper/1.21.11/org/bukkit/event/entity/CreatureSpawnEvent.html
+# TR: Derleme: Windows'ta gradlew.bat build. build/libs/VLosses-1.0.0.jar dosyasini
+# sunucunun plugins klasorune koyup sunucuyu yeniden baslatin. /vl setspawn ile konumu kaydedin.
+# EN: Build with gradlew.bat build; install build/libs/VLosses-1.0.0.jar in plugins and restart.
+# DE: Mit gradlew.bat build bauen, JAR aus build/libs nach plugins kopieren und neu starten.
+# TR: Ayarlari degistirdikten sonra /vl reload. Hatali YAML veya gecersiz aralik reddedilir;
+# calisan ayarlar korunur. Sunucunun /reload komutunu kullanmayin.
+# EN: Use /vl reload for changes; invalid settings keep the previous running configuration.
+# DE: Anderungen mit /vl reload laden; ungueltige Einstellungen ersetzen die laufenden nicht.
+# TR: /vl help, /vl diagnostics, /vl setspawn, /vl language tr, /vl spawn, /vl server survival.
+# EN: /vl diagnostics reports server TPS/MSPT, total JVM heap and integration conflicts.
+# DE: /vl diagnostics zeigt TPS/MSPT, gesamten JVM-Speicher und Integrationskonflikte.
+# TR: RAM degeri tum sunucuya aittir. Oyunculu yuk testi olmadan CPU/RAM garantisi verilmez.
+# TR: NPC, hologram ve sira sistemi bu eklentinin kapsamina dahil degildir.
+# TR: Config aciklamalari bu dosyalardadir; oyuncu mesajlari languages klasorundedir.
+config-version: 1
+server-name: VLosses
+
+language:
+  # TR: Varsayilan: tr/en/de/es/fr/pt. EN: Fallback language. DE: Standardsprache.
+  default: tr
+  # TR: Oyuncunun Minecraft dilini kullanir; /vl language ile yapilan secim onceliklidir.
+  # EN: Client language unless manually selected. /vl language auto resets the selection.
+  use-client-locale: true
+
+lobby:
+  # TR: Gercek dunya klasor adlarini girin. Baska dunyalar etkilenmez; '*' desteklenmez.
+  # EN: Explicit world names only. World transitions apply/remove lobby features automatically.
+  # DE: Nur diese Welten erhalten Lobby-Funktionen. Weltnamen sind gross-/kleinschreibungsabhangig.
+  worlds: [world]
+  # TR: Lobide cikis yapan oyuncu tekrar baglandiginda spawna gider. Cikista teleport yapilmaz.
+  # EN: Players logging into a lobby world return to spawn; other-world logins are preserved.
+  teleport-on-join: true
+  teleport-on-respawn: true
+  # TR: /vl setspawn doldurur. Bos world, yuklu ilk lobi dunyasinin dogus noktasini kullanir.
+  # EN: /vl setspawn saves coordinates. Empty world uses a loaded lobby world's spawn.
+  spawn:
+    world: ''
+  protection:
+    # TR: true ilgili davranisi engeller. vlosses.bypass bu korumalari atlar; OP bile otomatik almaz.
+    # EN: true blocks the behavior. Grant vlosses.bypass explicitly for builders.
+    # DE: true verhindert die Aktion. Baupersonal braucht explizit vlosses.bypass.
+    hunger: true
+    damage: true
+    fall: true
+    void: true
+    block-break: true
+    block-place: true
+    # TR: false buton/sandik/NPC etkilesimini acik tutar. true tum etkilesimleri kisitlar.
+    interact: false
+    drop-items: true
+    # TR: true = mob dogumu kapali. Dogal, spawner, yumurta, ureme, komut ve plugin dogumlari
+    # engellenir. Oyuncular/armor stand etkilenmez. Mob tabanli NPC icin bunu false yapin.
+    # Mevcut veya disaridan gelen moblar silinmez; bu ayar yeni dogumlari engeller.
+    # EN: Blocks new creature spawns for every spawn reason; existing mobs are not removed.
+    # DE: Verhindert neue Mob-Spawns; vorhandene Mobs werden nicht entfernt.
+    mob-spawning: true
+    # TR: Patlama, yangin ve mob kaynakli blok degisiklikleri yalniz lobi dunyalarinda engellenir.
+    # EN: Lobby-only explosion, fire and entity block damage prevention. No polling tasks.
+    # DE: Explosions-, Feuer- und Mob-Blockschutz nur in Lobby-Welten.
+    explosions: true
+    fire-spread: true
+    entity-griefing: true
+  health:
+    enabled: true
+    value: 20.0
+  time:
+    # TR: Yalniz oyuncunun gordugu saat sabitlenir, dunya kurallari degistirilmez.
+    # EN: Personal time only; the world clock is untouched. Restored when leaving the lobby.
+    enabled: true
+    ticks: 6000
+  weather:
+    enabled: true
+    # CLEAR / DOWNFALL
+    type: CLEAR
+
+links:
+  # TR: Kendi https adreslerinizi girin. Bos baglantilar tiklandiginda oyuncuya bilgi verilir.
+  # EN: Set your real HTTPS URLs. Empty links display a localized unavailable message.
+  # DE: Eigene HTTPS-Adressen eintragen; leere Links zeigen eine lokalisierte Meldung.
+  vote: ''
+  discord: ''
+  website: ''
+
+integrations:
+  # TR: Istegi baglidir. LuckPerms prefix/suffix/grup ve canli Bukkit yetkileri kullanilir.
+  # EN: Optional plugins, never bundled or required. Uses cached LuckPerms metadata.
+  luckperms: true
+  # TR: %player_name% gibi harici placeholderlar. Her expansion kendi maliyetine sahiptir.
+  # EN: Only invokes PlaceholderAPI for actual %tokens%. Slow expansions can affect tick time.
+  placeholderapi: true
+
+bridge:
+  # TR: Tek sunucuda kapali birakin. Birden cok dunya icin bridge gerekmez: lobby.worlds yeterli.
+  # EN: Enable only behind BungeeCord/Velocity; no extra proxy plugin is required.
+  # DE: Nur hinter BungeeCord/Velocity aktivieren. Mehrere Welten brauchen keine Bridge.
+  enabled: false
+  # TR: Her backend icin farkli ad. Proxy configinizdeki sunucu adlariyla ayni kullanin.
+  server-name: lobby
+  # TR: Gecis hedefleri beyaz listesi. Ayrica vlosses.server.survival yetkisi gerekir.
+  # EN: Allowed transfer targets; grant vlosses.server.<target> through LuckPerms.
+  allowed-servers: [survival]
+  # TR: 100 tick = 5 saniye; oyuncu yokken sorgu yapilmaz. Sayi yalniz bilgi amaclidir.
+  poll-interval-ticks: 100
+  # TR: Dil tercihi imzali plugin mesajlariyla aktarilir. Her sunucuda ayni guclu sir kullanin.
+  # EN: Optional HMAC-SHA256 language sync. Secret must be at least 32 characters and shared
+  # only by trusted backends. Use a cryptographically random secret; do not publish it.
+  # DE: Signierte Sprachsynchronisation braucht denselben zufalligen Schluessel (mind.32 Zeichen).
+  sync-language: false
+  secret: ''
+  # TR: Velocity: advanced.bungee-plugin-message-channel=true. Backend modern forwarding'i
+  # Paper/proxy belgelerine gore kurun. Bu eklenti forwarding guvenligini ayarlamaz.
+  # TR: Mesajlar oyuncu baglantisiyla tasinir. Bos sunucuya kalici teslim/kuyruk yoktur;
+  # dil aktarimi en iyi cabadir, veritabani replikasyonu degildir. Saatleri senkron tutun.
+  # EN: Player-carried delivery is best-effort; empty servers have no durable delivery.
+  # EN: LuckPerms cross-server sync uses LuckPerms shared storage/messaging; this plugin
+  # does not copy permissions, configs, inventories or worlds between servers.
+  # TR: Her backend'e JAR ve istenen configleri kurun; lobby.worlds/server-name'i yerel ayarlayin.
+  # TR: /vl language auto yerel secimi siler; otomatik dil oyuncunun istemcisinden belirlenir.
+  # Sources: https://docs.papermc.io/paper/dev/plugin-messaging/
+  # https://docs.papermc.io/velocity/dev/plugin-messaging/
+  # https://luckperms.net/wiki/Developer-API-Usage
+
+# TR: Sorun giderme: /vl diagnostics -> yuklenmemis dunya, opsiyonel entegrasyon, cift TAB/
+# scoreboard/item yoneticisi. Ayni ozelligi iki eklentide acik tutmayin. Ilgili enabled'i kapatin.
+# EN: Profile under your real player load using Paper's spark profiler. Compare the same
+# workload before/after. Faster animation intervals and external placeholders increase cost.
+# DE: Lasttest mit echten Spielern und spark durchfuehren; kurze Intervalle erhoehen die Last.
+# TR: players.yml dil tercihleri 60 saniyede bir arka planda ve kapanista atomik kaydedilir.
+# Aniden islem sonlanirsa son 60 saniyelik secimler kaybolabilir. Bozuk players.yml otomatik
+# ezilmez; yedek alip duzelttikten sonra sunucuyu yeniden baslatin.
