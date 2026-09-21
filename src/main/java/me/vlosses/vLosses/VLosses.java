@@ -3,6 +3,7 @@ package me.vlosses.vLosses;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -44,6 +45,7 @@ public class VLosses extends JavaPlugin implements Listener {
                 command.setExecutor(this);
                 command.setTabCompleter(this);
             }
+            startMetrics();
             tell(Bukkit.getConsoleSender(), "enabled");
             for (String issue : issues()) getLogger().warning(issue);
         } catch (Exception | LinkageError e) {
@@ -63,6 +65,15 @@ public class VLosses extends JavaPlugin implements Listener {
         integrations = new IntegrationService(this);
         integrations.start();
         for (Player player : Bukkit.getOnlinePlayers()) refresh(player);
+    }
+
+    /** Starts anonymous, server-owner-controlled bStats reporting. */
+    private void startMetrics() {
+        try {
+            new Metrics(this, 34180);
+        } catch (RuntimeException | LinkageError e) {
+            getLogger().warning("bStats could not start: " + e.getClass().getSimpleName());
+        }
     }
 
     private void stopServices() {
